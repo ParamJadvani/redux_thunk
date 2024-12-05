@@ -9,13 +9,18 @@ const Home = () => {
   let { products } = useSelector((store) => store);
   const dispatch = useDispatch();
 
+  // Fetch products when the component mounts
   useEffect(() => {
-    dispatch(methodAPI.get());
+    refreshProducts();
   }, []);
+
+  const refreshProducts = () => {
+    dispatch(methodAPI.get());
+  };
 
   return (
     <>
-      <Form />
+      <Form refreshProducts={refreshProducts} />
       <div className="home-container">
         {products.map(({ id, title, price, category, image }) => (
           <ProductUI
@@ -25,7 +30,7 @@ const Home = () => {
             price={price}
             category={category}
             image={image}
-            dispatch={dispatch}
+            refreshProducts={refreshProducts}
           />
         ))}
       </div>

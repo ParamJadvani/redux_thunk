@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import methodAPI from "../redux/Action";
 
-const Form = () => {
+const Form = ({ refreshProducts }) => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -17,10 +17,17 @@ const Form = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(methodAPI.post(formData));
+    await dispatch(methodAPI.post(formData)); // Post the new product
+    refreshProducts(); // Refresh the product list
+    setFormData({
+      image: "",
+      title: "",
+      price: "",
+      category: "",
+    }); // Reset the form
   };
 
   return (
